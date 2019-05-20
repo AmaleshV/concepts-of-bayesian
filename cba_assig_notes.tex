@@ -1,0 +1,67 @@
+% Created 2019-05-13 Mon 18:19
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{minted}
+\author{Marc-André Chénier}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Marc-André Chénier},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.2 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\section{Question 1}
+\label{sec:org951c1ab}
+Binomial likelihood, the posterior with a conjugate beta prior is:
+\begin{equation}
+p(\theta | y)=\frac{1}{B(\overline{\alpha}, \overline{\beta})} 
+\theta^{\overline{\alpha}-1}(1-\theta)^{\overline{\beta}-1}
+\end{equation}
+with 
+\begin{equation}
+\begin{aligned} \overline{\alpha} &=\alpha_{0}+y \\ 
+\overline{\beta} &=\beta_{0}+n-y \end{aligned}
+\end{equation}
+
+The beta prior can be specified as:
+\begin{equation}
+\equiv \text { binomial experiment with }\left(\alpha_{0}-1\right) 
+\text { successes in }\left(\alpha_{0}+\beta_{0}-2\right)
+\end{equation}
+
+\section{Question 2}
+\label{sec:org6c89be1}
+Check PPD for binomial likelihood on p. 151. We should take into
+account sampling variability of \(\hat{\theta}\)
+
+\section{Question 3}
+\label{sec:org4c7df3f}
+Contour probability: posterior evidence of \(H_{0}\) with HPD interval.
+Defined as:
+\begin{equation}
+P\left[p(\theta | \boldsymbol{y})>p\left(\theta_{0} | 
+\boldsymbol{y}\right)\right] \equiv\left(1-p_{B}\right)
+\end{equation}
+
+\(p_{B}\) is computed from the smallest HPD interval containing
+\(\theta_{0}\). 
+\end{document}

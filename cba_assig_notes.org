@@ -1,0 +1,38 @@
+* Question 1 
+Binomial likelihood, the posterior with a conjugate beta prior is:
+\begin{equation}
+p(\theta | y)=\frac{1}{B(\overline{\alpha}, \overline{\beta})} 
+\theta^{\overline{\alpha}-1}(1-\theta)^{\overline{\beta}-1}
+\end{equation}
+with 
+\begin{equation}
+\begin{aligned} \overline{\alpha} &=\alpha_{0}+y \\ 
+\overline{\beta} &=\beta_{0}+n-y \end{aligned}
+\end{equation}
+
+The beta prior can be specified as:
+\begin{equation}
+\equiv \text { binomial experiment with }\left(\alpha_{0}-1\right) 
+\text { successes in }\left(\alpha_{0}+\beta_{0}-2\right)
+\end{equation}
+
+* Question 2
+Check PPD for binomial likelihood on p. 151. We should take into
+account sampling variability of $\hat{\theta}$
+
+* Question 3
+Contour probability: posterior evidence of $H_{0}$ with HPD interval.
+Defined as:
+\begin{equation}
+P\left[p(\theta | \boldsymbol{y})>p\left(\theta_{0} | 
+\boldsymbol{y}\right)\right] \equiv\left(1-p_{B}\right)
+\end{equation}
+
+$p_{B}$ is computed from the smallest HPD interval containing
+$\theta_{0}$. 
+
+* Question 4
+Popular priors for BGLIM are normal proper priors with large variance.
+Gelman et al. however suggest Cauchy density with center 0 and scale
+parameter 2.5 for standardized continuous covariates.
+
