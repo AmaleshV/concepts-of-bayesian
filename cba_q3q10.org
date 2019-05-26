@@ -1,0 +1,98 @@
+#+latex_header: \usepackage{parskip}
+
+* Question 3
+
+The contour probability for $H_{0}:\theta_{0}=0.25$ is obtained with
+two computational approaches solving the same problem: measuring the
+area under the beta posterior density curve with limits defined such
+that $p(\theta|y) > p(\theta_{0}|y)$. When \theta_{0} is less than the
+mode of the posterior density, this area corresponds to $P(\theta_{0}
+< \theta < \delta)$, with density $p(\delta | y)=p(\theta_{0})$. In this
+scenario, the complement $p_{b}$ of the probability $P(\theta_{0} <
+\theta < \delta)$ can be interpreted as the counterpart of a two-sided
+p-value. This is the contour probability.
+
+# First approaches are briefly defined
+In the first approach, we simply look for $\delta$ such that
+$(P(\theta_0|y) - P(\delta|y))^2=0$. This is accomplished with the
+numerical optimization *R* program /optimize/. Again assuming
+$\theta_{0}$ to be the lower limit of integration, the complement of
+$p_{b}$ is then obtained from:
+
+#+name: eq_q3int
+\begin{align}
+\begin{split}
+P(\theta_{0} < \theta < \delta) =& \int_{\theta_{0}}^{\delta}
+P(\theta | y) d\theta \\
+=&\int_{\theta_{0}}^{\delta}\frac{1}
+{\operatorname{Beta}(\bar{\alpha}, \bar{\beta})} \theta^{\bar{\alpha}-1} 
+(1 - \theta)^{\bar{\beta} - 1} \\
+=& F(\delta | y) - F(\theta_{0} | y)
+\end{split}
+\end{align}
+
+with the *R* digital table for the beta cumulative distribution
+$F$. In the second approach, we first obtain the mode $\bar{\theta}$
+of the posterior beta density with
+$\frac{\bar{\alpha}-1}{\bar{\alpha} + \bar{\beta}-2}$. Then, for the
+case where $\theta_{0}$ is less than $\bar{\theta}$, we search for
+$\delta$ in the interval $[\bar{\theta}, 1]$ such that $P(\theta_{0} |
+y)=P(\delta | y)$. This is accomplished with the *R* program
+/uniroot/. Once $\delta$ is obtained, the complement of the contour
+probability $p_{b}$ is measured by following Equation [[eq_q3int]]. Both
+approaches give return the same contour probabilities.
+
+As in Questions 2 and 3, 
+
+
+
+# Then explain which method present results, figure, 
+# alternative with
+# non-informative prior
+
+* Question 10
+Our goal here is to find the dosage associated with an increase of
+0.01 in excess risk $q$ of foetus malformation. It is useful to
+reformulate the question in order to clarify the problem and its
+solution.
+
+ The excess risk $q$ is associated with a probability of malformation
+$P(d^{*})$ by:
+
+\begin{equation}
+P(d^{*})=q(1-P(0)) + P(0)
+\end{equation}
+
+where $P(0)$ is the prevalence of foetus malformation at a dose 0 of
+diglyme. The logit of $P(d)$, the probability of malformation at a
+given dose, can be estimated with the linear model $\alpha + \beta*
+\mathrm{dose}$. As such, the dose we are looking for can be deduced
+with simple algebra from
+
+#+name: eq_q10dose
+\begin{equation}
+\mathrm{dose}=\mathrm{BMD}=\frac{\operatorname{logit}(P(d^{*})) 
+- \alpha}{\beta}
+\end{equation}
+
+provided we have estimates for $\alpha$ and $\beta$. This dose is
+called the benchmark dose (BMD). From Question 3, we posess samples
+from the posterior distributions of $\beta$ and $\alpha$. Thus, we can
+not only furnish a point estimate of the BMD, but also express its
+uncertainty with a certitude interval. Only, as the dose variable is
+standardized, Equation [[eq_q10dose]] becomes
+
+\begin{equation}
+\mathrm{BMD}=\left(\frac{\operatorname{logit}(P(d^{*})) - \alpha}
+{\beta}\right) s_{\mathrm{dose}} + \operatorname{avg}(\mathrm{dose})
+\end{equation}
+
+where $s$ and $\operatorname{avg}$ respectively designate the standard
+deviation and mean of the dose covariate.
+
+Assuming that the prevalence at dose 0, $P(0)$, is known and obtained
+from the proportion in the provided table (i.e. 0.238), we get a mean
+BMD of 32.17 with a $95\%$ equal-tails certitude interval of 20.53 to
+42.79.
+
+# P0 assumed known or with uninformative prior for a start

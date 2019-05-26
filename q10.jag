@@ -1,0 +1,14 @@
+model {
+      for(i in 1:g) {
+            y[i] ~ dbinom(theta[i], n[i])
+            logit(theta[i]) <- alpha + beta * sdose[i]
+      }
+      
+      alpha ~ dnorm(0, 1/100)
+      beta ~ dnorm(0, 1/100)
+
+      for(i in 1:g) {
+            logitp[i]  <- alpha + beta * sdose[i]
+            prevp[i] <- ilogit(logitp[i])
+      }
+}

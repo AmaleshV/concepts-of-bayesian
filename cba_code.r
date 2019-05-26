@@ -177,7 +177,10 @@ sapply(prev[-1], function(x) {
 })
 
 ## Question 10
-param.dat <- logit.csim1[, c(1, 2)]
+param.dat <- logit.csim1[, c(1, 2, 8)]
+## Uninformative beta prior
+prev0 <- rbeta(nrow(param.dat), 68, 283)
+## Assume p0 is known
 qs <- 0.01 * (1 - prev[1]) + prev[1]
 
 bmds <- (log(qs/(1 - qs)) - param.dat[, 1])/param.dat[, 2]
