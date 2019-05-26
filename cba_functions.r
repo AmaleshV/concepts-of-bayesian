@@ -73,8 +73,35 @@ pb <- function(t0, alpha, beta) {
     return(c(t0=t0, to=to, pb=1-pb_compl, pb_compl=pb_compl))
 }
 
+pb2 <- function(t0=0.25, alpha, beta)  {
+    f <- function(theta) {
+        d <- dbeta(0.25, a, b)
+        out <- 1/beta(a, b) * theta^(a-1) * (1-theta)^(b-1) - d
+        return(out)
+    }
 
+    d <- function(theta) {
+        dbeta(theta, shape1=a, shape2=b)
+    }
 
+    q5 <- qbeta(0.5, alpha, beta)
+    bool <- q5 > t0
+    if(bool) {
+        to <- uniroot(f, c(q5, 1))$root
+        pb_compl <- integrate(d, t0, to)$value
+    }
+    else {
+        to <- uniroot(f, c(0, q5))$root
+        pb_compl <- integrate(d, to, t0)$value
+    }
+    print(pb_compl)
+    
+    return(c(t0=t0,
+             to=to,
+             pb=1-pb_compl,
+             pb_compl=pb_compl))
+}
 
+plot_contour <- 
 
 

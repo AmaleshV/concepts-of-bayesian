@@ -1,4 +1,4 @@
-% Created 2019-05-13 Mon 18:19
+% Created 2019-05-26 Sun 12:10
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -15,6 +15,7 @@
 \usepackage{capt-of}
 \usepackage{hyperref}
 \usepackage{minted}
+\usepackage{parskip}
 \author{Marc-André Chénier}
 \date{\today}
 \title{}
@@ -29,8 +30,9 @@
 
 \tableofcontents
 
+
 \section{Question 1}
-\label{sec:org951c1ab}
+\label{sec:org134d2f8}
 Binomial likelihood, the posterior with a conjugate beta prior is:
 \begin{equation}
 p(\theta | y)=\frac{1}{B(\overline{\alpha}, \overline{\beta})} 
@@ -49,12 +51,12 @@ The beta prior can be specified as:
 \end{equation}
 
 \section{Question 2}
-\label{sec:org6c89be1}
+\label{sec:org41d5da7}
 Check PPD for binomial likelihood on p. 151. We should take into
 account sampling variability of \(\hat{\theta}\)
 
 \section{Question 3}
-\label{sec:org4c7df3f}
+\label{sec:orgb6d7cdb}
 Contour probability: posterior evidence of \(H_{0}\) with HPD interval.
 Defined as:
 \begin{equation}
@@ -64,4 +66,18 @@ P\left[p(\theta | \boldsymbol{y})>p\left(\theta_{0} |
 
 \(p_{B}\) is computed from the smallest HPD interval containing
 \(\theta_{0}\). 
+
+\(\operatorname{Beta}\left(\alpha_{0}, \beta_{0}\right)\) prior is
+equivalent to a binomial experiment with \(\alpha_{0} - 1\) successes in
+(\(\alpha_{0} + \beta_{0} - 2\)) experiments.
+
+The non-informative beta prior has \(\alpha_{0}=1, \beta_{0}=1\) and is
+equal the uniform prior on \([0, 1]\).
+
+
+\section{Question 4}
+\label{sec:org8e86954}
+Popular priors for BGLIM are normal proper priors with large variance.
+Gelman et al. however suggest Cauchy density with center 0 and scale
+parameter 2.5 for standardized continuous covariates.
 \end{document}

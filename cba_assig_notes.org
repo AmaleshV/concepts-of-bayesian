@@ -1,3 +1,5 @@
+#+latex_header: \usepackage{parskip}
+
 * Question 1 
 Binomial likelihood, the posterior with a conjugate beta prior is:
 \begin{equation}
@@ -30,6 +32,14 @@ P\left[p(\theta | \boldsymbol{y})>p\left(\theta_{0} |
 
 $p_{B}$ is computed from the smallest HPD interval containing
 $\theta_{0}$. 
+
+$\operatorname{Beta}\left(\alpha_{0}, \beta_{0}\right)$ prior is
+equivalent to a binomial experiment with $\alpha_{0} - 1$ successes in
+($\alpha_{0} + \beta_{0} - 2$) experiments.
+
+The non-informative beta prior has $\alpha_{0}=1, \beta_{0}=1$ and is
+equal the uniform prior on $[0, 1]$.
+
 
 * Question 4
 Popular priors for BGLIM are normal proper priors with large variance.

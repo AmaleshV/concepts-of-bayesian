@@ -51,11 +51,40 @@ rownames(bb_int) <- c('lo', 'hi')
 ## Question 3
 p <- 0.25
 
-contour.dat <- mapply(function(alpha, beta) {
+## Non informative conjugate prior
+abar_vec <- dyme.dat$nmalform
+bbar_vec <- dyme.dat$nfoetuses - dyme.dat$nmalform
+
+contour.dat1 <- mapply(function(alpha, beta) {
     pb(p, alpha, beta)
 }, abar_vec, bbar_vec)
-colnames(contour.dat) <- dyme.dat$dose
-contour.dat <- round(contour.dat, 3)
+colnames(contour.dat1) <- dyme.dat$dose
+contour.dat1 <- round(contour.dat1, 3)
+
+contour.dat2 <- mapply(function(alpha, beta) {
+    pb(p, alpha, beta)
+}, abar_vec, bbar_vec)
+colnames(contour.dat2) <- dyme.dat$dose
+contour.dat2 <- round(contour.dat2, 3)
+
+pb2(0.25, abar_vec[1], bbar_vec[2])
+
+
+curve(d, 0.1, .3)
+dens <- dbeta(0.25, a, b)
+abline(h=dens, lty=3)
+
+sol <- uniroot(f, c(0, qbeta(0.5, a, b)))$root
+x <- seq(sol, 0.25, length.out=1e3)
+y <- dbeta(x, a, b)
+x <- c(sol, x, 0.25)
+y <- c(0, y, 0)
+polygon(x, y, col='black')
+
+pb <- 1 - integrate(d, sol, 0.25)$value
+
+
+
 
 ## Question 4
 logit.dat <- list(y=dyme.dat$nmalform,
