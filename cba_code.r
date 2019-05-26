@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd('/home/marc/School/Concepts_Bayesian_Inference/cba_assigment/')
+setwd('/home/marc/School/Concepts_Bayesian_Inference/concepts_bayesian_project/')
 
 source("./cba_functions.r")
 library(rjags)
@@ -51,9 +51,9 @@ rownames(bb_int) <- c('lo', 'hi')
 ## Question 3
 p <- 0.25
 
-## Non informative conjugate prior
-abar_vec <- dyme.dat$nmalform
-bbar_vec <- dyme.dat$nfoetuses - dyme.dat$nmalform
+## ## Non informative conjugate prior
+## abar_vec <- dyme.dat$nmalform
+## bbar_vec <- dyme.dat$nfoetuses - dyme.dat$nmalform
 
 contour.dat1 <- mapply(function(alpha, beta) {
     pb(p, alpha, beta)
@@ -67,10 +67,10 @@ contour.dat2 <- mapply(function(alpha, beta) {
 colnames(contour.dat2) <- dyme.dat$dose
 contour.dat2 <- round(contour.dat2, 3)
 
-pb2(0.25, abar_vec[1], bbar_vec[2])
+pb2(0.25, abar_vec[4], bbar_vec[4])
 
 
-curve(d, 0.1, .3)
+curve(d, 0.1, .3, fill='blue')
 dens <- dbeta(0.25, a, b)
 abline(h=dens, lty=3)
 
@@ -83,7 +83,8 @@ polygon(x, y, col='black')
 
 pb <- 1 - integrate(d, sol, 0.25)$value
 
-
+layout(matrix(c(seq(1, 4), 5, 5), nrow=2, byrow=TRUE))
+mapply(contour_plot, alpha=abar_vec, beta=bbar_vec)
 
 
 ## Question 4

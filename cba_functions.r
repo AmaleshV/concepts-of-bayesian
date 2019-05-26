@@ -75,13 +75,13 @@ pb <- function(t0, alpha, beta) {
 
 pb2 <- function(t0=0.25, alpha, beta)  {
     f <- function(theta) {
-        d <- dbeta(0.25, a, b)
-        out <- 1/beta(a, b) * theta^(a-1) * (1-theta)^(b-1) - d
+        d <- dbeta(0.25, alpha, beta)
+        out <- 1/beta(alpha, beta) * theta^(alpha-1) * (1-theta)^(beta-1) - d
         return(out)
     }
 
     d <- function(theta) {
-        dbeta(theta, shape1=a, shape2=b)
+        dbeta(theta, shape1=alpha, shape2=beta)
     }
 
     q5 <- qbeta(0.5, alpha, beta)
@@ -94,7 +94,6 @@ pb2 <- function(t0=0.25, alpha, beta)  {
         to <- uniroot(f, c(0, q5))$root
         pb_compl <- integrate(d, to, t0)$value
     }
-    print(pb_compl)
     
     return(c(t0=t0,
              to=to,
@@ -102,6 +101,35 @@ pb2 <- function(t0=0.25, alpha, beta)  {
              pb_compl=pb_compl))
 }
 
-plot_contour <- 
+contour_plot <- function(t0=0.25, alpha, beta, lo=0, hi=1) {
+    dfun <- function(theta) {
+        dbeta(theta, shape1=alpha, shape2=beta)
+    }
+    input <- pb2(t0, alpha, beta)
+    pb <- input[3]
+    pb <- round(pb, 3)
+    to <- input[2]
+    bool <- to > t0
+    if(bool) {
+        x <- seq(t0, to, length.out=1e3)
+        y <- dbeta(x, alpha, beta)
+        x <- c(t0, x, to)
+        y <- c(0, y , 0)
+    }
+    else {
+        x <- seq(to, t0, length.out=1e3)
+        y <- dbeta(x, alpha, beta)
+        x <- c(to, x, t0)
+        y <- c(0, y , 0)
+    }
+
+    curve(dfun, lo, hi, xlab='Theta', ylab='Beta density',
+          main=paste0('Alpha=', alpha, ', Beta=', beta,
+                      ', pb=', pb))
+    abline(h=dfun(t0), lty=3)
+    polygon(x, y, col='grey40')
+   
+}
+
 
 
