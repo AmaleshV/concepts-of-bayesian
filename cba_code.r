@@ -111,9 +111,9 @@ logit.sim1 <- coda.samples(logit.mod1, n.iter=1e4,
 
 logit.csim1 <- as.mcmc(do.call('rbind', logit.sim1))
 
-## plot(logit.sim1, ask=TRUE)
-## gelman.diag(logit.sim1)
-## gelman.plot(logit.sim1)
+plot(logit.sim1, ask=TRUE)
+gelman.diag(logit.sim1,confidence = 0.95, transform=FALSE, autoburnin=TRUE,multivariate=F)
+gelman.plot(logit.sim1)
 
 summary(logit.sim1)
 
