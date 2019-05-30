@@ -11,4 +11,3 @@ Nil
  * Xinyi Li (Questions 4 and 6)
 
 ## Board of questions ##
-Question 6 needs the result (graphs) from 1-5. 
