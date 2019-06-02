@@ -1,7 +1,6 @@
 #+latex_header: \usepackage{parskip}
 
 * Question 3
-
 The contour probability for $H_{0}:\theta_{0}=0.25$ is obtained with
 two computational approaches solving the same problem: measuring the
 area under the beta posterior density curve with limits defined such
@@ -42,9 +41,42 @@ y)=P(\delta | y)$. This is accomplished with the *R* program
 probability $p_{b}$ is measured by following Equation [[eq_q3int]]. Both
 approaches give return the same contour probabilities.
 
-As in Questions 2 and 3, 
+As in Questions 2 and 3, we give dose 0 an informative conjugate prior
+with $\alpha=y-1=29$ and $\beta=n-y-1=193$. The other doses are given
+vague beta priors with $\alpha=1$ and $\beta=1$ which correspond to a
+uniform distribution with support from 0 to 1. In Table [[tab_contours]],
+the contour probabilities are presented for each dose. The probability
+at dose 500 couldn't converge because 1 is the maximum of the beta
+distribution and the posterior mode as a value of 1. Convergence could
+have be obtained with an informative prior. For every dose, the
+probability of the true $\theta$ being 0.25 is less than 0.05. Thus,
+we conclude that the $H_0$ is implausible and reject it. Remarkably
+with dose 0, we would have kept $H_{0}$ had the prior been
+non-informative (i.e. $p_b=0.68$).
 
+#+caption: Contour probabilities for $H_0$:$\theta_0=0.25$ per dose level
+#+name: tab_contours
+#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :align cccccc
+#+ATTR_LATEX: :width .5\textwidth
+|--------+--------------+------------+-------+-----------+--------|
+| *Dose* | *$\theta_0$* | *$\delta$* | *p_b* | *1 - p_b* | *Obj.* |
+|      0 |         0.25 |      0.137 | 0.001 |     0.999 |      0 |
+|   62.5 |         0.25 |      0.140 | 0.035 |     0.965 |      0 |
+|    125 |         0.25 |      0.947 | 0.000 |     1.000 |      0 |
+|    250 |         0.25 |      1.000 | 0.000 |     1.000 |      0 |
+|    500 |         0.25 |      1.000 | 0.000 |     1.000 |     NA |
+|--------+--------------+------------+-------+-----------+--------|
 
+In Figure [[fig_contourplots]], the complement of the contour probabilities are
+illustrated for each dosage. These are coloured in grey and the
+plotted curves are the posterior beta distributions.
+
+#+caption: Contour probability plots per dose
+#+name: fig_contourplots
+#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :width .5\textwidth
+[[./q2_contourplots.jpg]]
 
 # Then explain which method present results, figure, 
 # alternative with

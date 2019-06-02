@@ -51,9 +51,24 @@ rownames(bb_int) <- c('lo', 'hi')
 ## Question 3
 p <- 0.25
 
-## ## Non informative conjugate prior
-## abar_vec <- dyme.dat$nmalform
-## bbar_vec <- dyme.dat$nfoetuses - dyme.dat$nmalform
+## Non informative conjugate prior for dose != 0
+## Informative with a=29 and b=193 for dose=0
+abar_vec <- dyme.dat$nmalform 
+bbar_vec <- dyme.dat$nfoetuses - dyme.dat$nmalform
+non_index <- 2:length(abar_vec)
+inf_index <- 1
+abar_vec[non_index] <- abar_vec[non_index] + 1
+bbar_vec[non_index] <- bbar_vec[non_index] + 1
+
+infor <- TRUE
+if(infor) {
+    abar_vec[inf_index] <- abar_vec[inf_index] + 29
+    bbar_vec[inf_index] <- bbar_vec[inf_index] + 193
+}
+if(!infor) {
+    abar_vec[inf_index] <- abar_vec[inf_index] + 1
+    bbar_vec[inf_index] <- bbar_vec[inf_index] + 1
+}
 
 contour.dat1 <- mapply(function(alpha, beta) {
     pb(p, alpha, beta)
@@ -61,30 +76,12 @@ contour.dat1 <- mapply(function(alpha, beta) {
 colnames(contour.dat1) <- dyme.dat$dose
 contour.dat1 <- round(contour.dat1, 3)
 
-contour.dat2 <- mapply(function(alpha, beta) {
-    pb(p, alpha, beta)
-}, abar_vec, bbar_vec)
-colnames(contour.dat2) <- dyme.dat$dose
-contour.dat2 <- round(contour.dat2, 3)
-
-pb2(0.25, abar_vec[4], bbar_vec[4])
-
-
-curve(d, 0.1, .3, fill='blue')
-dens <- dbeta(0.25, a, b)
-abline(h=dens, lty=3)
-
-sol <- uniroot(f, c(0, qbeta(0.5, a, b)))$root
-x <- seq(sol, 0.25, length.out=1e3)
-y <- dbeta(x, a, b)
-x <- c(sol, x, 0.25)
-y <- c(0, y, 0)
-polygon(x, y, col='black')
-
-pb <- 1 - integrate(d, sol, 0.25)$value
-
+## Plot
+jpeg('./q3_contourplots.jpg', width=8, height=6,
+     units='in', res=300)
 layout(matrix(c(seq(1, 4), 5, 5), nrow=2, byrow=TRUE))
 mapply(contour_plot, alpha=abar_vec, beta=bbar_vec)
+dev.off()
 
 
 ## Question 4
@@ -179,14 +176,24 @@ sapply(prev[-1], function(x) {
 ## Question 10
 param.dat <- logit.csim1[, c(1, 2, 8)]
 ## Uninformative beta prior
-prev0 <- rbeta(nrow(param.dat), 68, 283)
+prev0 <- rbeta(nrow(param.dat), abar_vec[1], bbar_vec[1])
 ## Assume p0 is known
 qs <- 0.01 * (1 - prev[1]) + prev[1]
+qs2 <- 0.01 * (1 - prev0) + prev0
+qs3 <- 0.01 * (1 - param.dat[, 3]) + param.dat[, 3]
+var(qs3)
+var(qs2)
 
 bmds <- (log(qs/(1 - qs)) - param.dat[, 1])/param.dat[, 2]
 bmd <- bmds * sd(dyme.dat$dose) + mean(dyme.dat$dose)
 summary(bmd)
 
+bmds2 <- (log(qs2/(1 - qs2)) - param.dat[, 1])/param.dat[, 2]
+bmd2 <- bmds2 * sd(dyme.dat$dose) + mean(dyme.dat$dose)
+summary(bmd2)
 
+bmds3 <- (log(qs3/(1 - qs3)) - param.dat[, 1])/param.dat[, 2]
+bmd3 <- bmds3 * sd(dyme.dat$dose) + mean(dyme.dat$dose)
+summary(bmd3)
 
 

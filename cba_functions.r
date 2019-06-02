@@ -57,20 +57,42 @@ pb <- function(t0, alpha, beta) {
         out <- (d1 - d2)^2
         return(out)
     }
-    bool <- pbeta(t0, alpha, beta) > 0.5
+    mode_b <- (alpha - 1)/(alpha + beta - 2)
+    bool <- t0 > mode_b
+    ## Check for extreme cases 0 and 1
+    if(mode_b == 1) {
+        to <- 1
+        obj <- NA
+        pb_compl <- 1 - pbeta(t0, alpha, beta)
+        return(c(t0=t0, to=to, pb=1-pb_compl,
+                 pb_compl=pb_compl, obj=obj))
+    }
+    if(mode_b == 0) {
+        to <- 0
+        obj <- NA
+        pb_compl <- pbeta(t0, alpha, beta)
+        return(c(t0=t0, to=to, pb=1-pb_compl,
+                 pb_compl=pb_compl, obj=obj))
+    }
+
+    ## Compute HPD if no extreme case
     if(bool) {
-        to <- optimize(f, lower=0, upper=t0, t0=t0,
+        to <- optimize(f, lower=0, upper=mode_b, t0=t0,
                        alpha=alpha, beta=beta)$minimum
+        obj <- optimize(f, lower=0, upper=mode_b, t0=t0,
+                       alpha=alpha, beta=beta)$objective
         pb_compl <- pbeta(t0, alpha, beta) -
             pbeta(to, alpha, beta)
     }
     else {
-        to <- optimize(f, lower=t0, upper=1, t0=t0,
+        to <- optimize(f, lower=mode_b, upper=1, t0=t0,
                        alpha=alpha, beta=beta)$minimum
+        obj <- optimize(f, lower=mode_b, upper=1, t0=t0,
+                        alpha=alpha, beta=beta)$objective
         pb_compl <- pbeta(to, alpha, beta) -
             pbeta(t0, alpha, beta)
     }
-    return(c(t0=t0, to=to, pb=1-pb_compl, pb_compl=pb_compl))
+    return(c(t0=t0, to=to, pb=1-pb_compl, pb_compl=pb_compl, obj=obj))
 }
 
 pb2 <- function(t0=0.25, alpha, beta)  {
@@ -105,7 +127,7 @@ contour_plot <- function(t0=0.25, alpha, beta, lo=0, hi=1) {
     dfun <- function(theta) {
         dbeta(theta, shape1=alpha, shape2=beta)
     }
-    input <- pb2(t0, alpha, beta)
+    input <- pb(t0, alpha, beta)
     pb <- input[3]
     pb <- round(pb, 3)
     to <- input[2]
@@ -128,7 +150,6 @@ contour_plot <- function(t0=0.25, alpha, beta, lo=0, hi=1) {
                       ', pb=', pb))
     abline(h=dfun(t0), lty=3)
     polygon(x, y, col='grey40')
-   
 }
 
 

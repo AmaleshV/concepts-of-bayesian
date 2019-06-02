@@ -1,4 +1,4 @@
-% Created 2019-05-26 Sun 22:20
+% Created 2019-06-02 Sun 01:03
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -32,8 +32,7 @@
 
 
 \section{Question 3}
-\label{sec:org2f33090}
-
+\label{sec:org2addb33}
 The contour probability for \(H_{0}:\theta_{0}=0.25\) is obtained with
 two computational approaches solving the same problem: measuring the
 area under the beta posterior density curve with limits defined such
@@ -51,7 +50,7 @@ numerical optimization \textbf{R} program \emph{optimize}. Again assuming
 \(p_{b}\) is then obtained from:
 
 \begin{align}
-\label{eq:org66ba161}
+\label{eq:org201972e}
 \begin{split}
 P(\theta_{0} < \theta < \delta) =& \int_{\theta_{0}}^{\delta}
 P(\theta | y) d\theta \\
@@ -70,13 +69,51 @@ case where \(\theta_{0}\) is less than \(\bar{\theta}\), we search for
 \(\delta\) in the interval \([\bar{\theta}, 1]\) such that \(P(\theta_{0} |
 y)=P(\delta | y)\). This is accomplished with the \textbf{R} program
 \emph{uniroot}. Once \(\delta\) is obtained, the complement of the contour
-probability \(p_{b}\) is measured by following Equation \ref{eq:org66ba161}. Both
+probability \(p_{b}\) is measured by following Equation \ref{eq:org201972e}. Both
 approaches give return the same contour probabilities.
 
-As in Questions 2 and 3, 
+As in Questions 2 and 3, we give dose 0 an informative conjugate prior
+with \(\alpha=y-1=29\) and \(\beta=n-y-1=193\). The other doses are given
+vague beta priors with \(\alpha=1\) and \(\beta=1\) which correspond to a
+uniform distribution with support from 0 to 1. In Table \ref{tab:org382fe79},
+the contour probabilities are presented for each dose. The probability
+at dose 500 couldn't converge because 1 is the maximum of the beta
+distribution and the posterior mode as a value of 1. Convergence could
+have be obtained with an informative prior. For every dose, the
+probability of the true \(\theta\) being 0.25 is less than 0.05. Thus,
+we conclude that the \(H_0\) is implausible and reject it. Remarkably
+with dose 0, we would have kept \(H_{0}\) had the prior been
+non-informative (i.e. \(p_b=0.68\)).
+
+\begin{table}[H]
+\caption{\label{tab:org382fe79}
+Contour probabilities for \(H_0\):\(\theta_0=0.25\) per dose level}
+\centering
+\begin{tabular}{cccccc}
+\hline
+\textbf{Dose} & \textbf{\(\theta_0\)} & \textbf{\(\delta\)} & \textbf{p\(_{\text{b}}\)} & \textbf{1 - p\(_{\text{b}}\)} & \textbf{Obj.}\\
+0 & 0.25 & 0.137 & 0.001 & 0.999 & 0\\
+62.5 & 0.25 & 0.140 & 0.035 & 0.965 & 0\\
+125 & 0.25 & 0.947 & 0.000 & 1.000 & 0\\
+250 & 0.25 & 1.000 & 0.000 & 1.000 & 0\\
+500 & 0.25 & 1.000 & 0.000 & 1.000 & NA\\
+\hline
+\end{tabular}
+\end{table}
+
+In Figure \ref{fig:orgce72a9a}, the complement of the contour probabilities are
+illustrated for each dosage. These are coloured in grey and the
+plotted curves are the posterior beta distributions.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.5\textwidth]{./q2_contourplots.jpg}
+\caption{\label{fig:orgce72a9a}
+Contour probability plots per dose}
+\end{figure}
 
 \section{Question 10}
-\label{sec:org0bbe795}
+\label{sec:orgdcecd46}
 Our goal here is to find the dosage associated with an increase of
 0.01 in excess risk \(q\) of foetus malformation. It is useful to
 reformulate the question in order to clarify the problem and its
@@ -96,7 +133,7 @@ given dose, can be estimated with the linear model \(\alpha + \beta*
 with simple algebra from
 
 \begin{equation}
-\label{eq:org57e7eda}
+\label{eq:org4c19ae1}
 \mathrm{dose}=\mathrm{BMD}=\frac{\operatorname{logit}(P(d^{*})) 
 - \alpha}{\beta}
 \end{equation}
@@ -106,7 +143,7 @@ called the benchmark dose (BMD). From Question 3, we posess samples
 from the posterior distributions of \(\beta\) and \(\alpha\). Thus, we can
 not only furnish a point estimate of the BMD, but also express its
 uncertainty with a certitude interval. Only, as the dose variable is
-standardized, Equation \ref{eq:org57e7eda} becomes
+standardized, Equation \ref{eq:org4c19ae1} becomes
 
 \begin{equation}
 \mathrm{BMD}=\left(\frac{\operatorname{logit}(P(d^{*})) - \alpha}
